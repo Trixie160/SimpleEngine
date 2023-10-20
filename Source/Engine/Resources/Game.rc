@@ -1,4 +1,0 @@
-#include "resource.h"
-
-IDI_ICON1               ICON                    "..\\..\\..\\Bin\\Assets\\Hamster.ico"
-IDI_ICON2               ICON                    "..\\..\\..\\Bin\\Assets\\Cat.ico"
