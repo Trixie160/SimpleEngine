@@ -7,6 +7,15 @@
     <Filter Include="Graphics">
       <UniqueIdentifier>{1653CE33-0220-293F-2B39-17E717655ECD}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{EFAC8DF2-5B8C-0C8E-64A4-9764D00273EF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{667B2A0E-D28F-52BF-9B11-F61E07E54EF0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triangle">
+      <UniqueIdentifier>{DB3AC344-C707-1E50-F020-0CF8DC4C53DE}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console\Console.h">
@@ -14,6 +23,12 @@
     </ClInclude>
     <ClInclude Include="Graphics\GraphicsEngine.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer\Timer.h">
+      <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle\Triangle.h">
+      <Filter>Triangle</Filter>
     </ClInclude>
     <ClInclude Include="engine.h" />
   </ItemGroup>
@@ -24,6 +39,20 @@
     <ClCompile Include="Graphics\GraphicsEngine.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Timer\Timer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle\Triangle.cpp">
+      <Filter>Triangle</Filter>
+    </ClCompile>
     <ClCompile Include="engine.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\TrianglePS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\TriangleVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

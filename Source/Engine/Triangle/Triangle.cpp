@@ -18,9 +18,9 @@ bool Triangle::Init(ID3D11Device* aDevice)
 
 	Vertex vertices[3] =
 	{
-		{-1.0f,0.0f,0,1,1,0,0,1},
-		{1.0f,1.0f,0,1,0,1,0,1},
-		{0.0f,-1.0f,0,1,0,0,1,1}
+		{-0.8f,0.0f,0,1,1,0,0,1},
+		{-0.6f,0.5f,0,1,0,1,0,1},
+		{-0.4f,0.0f,0,1,0,0,1,1}
 	};
 
 	unsigned int indices[3] =

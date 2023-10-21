@@ -1,9 +1,14 @@
 #include <cassert>
 #include "engine.h"
+#include "Graphics/GraphicsEngine.h"
+#include "Timer/Timer.h"
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 Engine::Engine()
 	: myHWND(nullptr)
 	, myGraphicsEngine(nullptr)
+	, myTimer(nullptr)
 {
 }
 
@@ -15,8 +20,12 @@ Engine::~Engine()
 	if (myGraphicsEngine != nullptr)
 		delete myGraphicsEngine;
 
+	if (myTimer != nullptr)
+		delete myTimer;
+
 	myHWND = nullptr;
 	myGraphicsEngine = nullptr;
+	myTimer = nullptr;
 }
 
 void Engine::Init(HINSTANCE& hInstance, const int aWidth, const int aHeight)
@@ -29,6 +38,8 @@ void Engine::Init(HINSTANCE& hInstance, const int aWidth, const int aHeight)
 
 	myGraphicsEngine = new GraphicsEngine();
 	myGraphicsEngine->Init(aHeight, aWidth, *myHWND);
+
+	myTimer = new Timer();
 }
 
 HWND* Engine::SetupMainWindow(HINSTANCE& hInstance, const int aWidth, const int aHeight)
@@ -69,6 +80,7 @@ HWND* Engine::SetupMainWindow(HINSTANCE& hInstance, const int aWidth, const int 
 
 bool Engine::BeginFrame()
 {
+	myTimer->Update();
 	return myGraphicsEngine->BeginFrame();
 }
 
@@ -77,3 +89,7 @@ void Engine::Render()
 	myGraphicsEngine->Render();
 }
 
+float Engine::GetDeltaTime() const
+{
+	return myTimer->GetDeltaTime();
+}

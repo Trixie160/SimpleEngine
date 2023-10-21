@@ -1,6 +1,6 @@
-#include "GraphicsEngine.h"
 #include <d3d11.h>
-
+#include <Windows.h>
+#include "GraphicsEngine.h"
 #include "Triangle/Triangle.h"
 
 //#define REPORT_DX_WARNINGS

@@ -3,7 +3,6 @@
 #define NOMINMAX
 
 #include <wrl/client.h>
-#include <Windows.h>
 
 using Microsoft::WRL::ComPtr;
 

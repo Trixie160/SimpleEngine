@@ -2,30 +2,42 @@
 workspace "SimpleEngine"
 	startproject "Game"
 	architecture "x64"
-	warnings "Extra"
-	flags {"FatalWarnings"}
+	language "C++"
 	cppdialect "C++20"
+	warnings "Extra"
+	flags { "FatalWarnings" }
+	objdir "Temp"
+
+	local shader_dir = "../../Bin/Shaders/"
+	os.mkdir(shader_dir)
+
+	defines { 
+		'SHADER_DIR="' .. shader_dir .. '"' 
+	}
 
 	configurations {
 		"Debug",
 		"Release"
 	}
 
+	filter "configurations:Debug"
+		defines { "_DEBUG" }
+		symbols "On"
+
+	filter "configurations:Release"
+		defines { "_RELEASE" }
+		optimize "On"
+
 	project "Engine"
 		kind "StaticLib"
-		language "C++"
 		targetdir "Lib"
-		objdir "Temp"
 		location "Source/Engine"
-		files {"Source/Engine/**.h", "Source/Engine/**.cpp", "Source/Engine/Shaders/**hlsl"}
 		includedirs{"Source/Engine/"}
+		files {"Source/Engine/**.h", "Source/Engine/**.cpp", "Source/Engine/Shaders/**hlsl"}
 		links {"d3d11"}
 
 		shadermodel("5.0")
-		local shader_dir = "../../Bin/Shaders/"
-		defines { 'SHADER_DIR="' .. shader_dir .. '"' }
-		os.mkdir(shader_dir)
-
+		
 		filter("files:**.hlsl")
 			shaderobjectfileoutput(shader_dir.."%{file.basename}"..".cso")
 
@@ -37,12 +49,10 @@ workspace "SimpleEngine"
 
 	project "Game"
 		kind "WindowedApp"
-		language "C++"
 		targetdir "Bin/"
-		targetname "%{prj.name}_%{cfg.buildcfg}"
-		objdir "Temp"
+		targetname "SimpleEngine_%{cfg.buildcfg}"
 		location "Source/Game"
-		files {"Source/Game/**.h", "Source/Game/**.cpp", "Source/Game/Resources/**.rc"}
 		includedirs{ "Source/", "Source/Engine/"}
+		files {"Source/Game/**.h", "Source/Game/**.cpp", "Source/Game/Resources/**.rc"}
 		links{"Engine"}
 		dependson {"Engine"}
