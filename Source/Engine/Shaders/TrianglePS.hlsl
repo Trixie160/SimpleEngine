@@ -1,4 +1,3 @@
-#pragma target ps_5_0
 
 struct PixelInputType
 {
