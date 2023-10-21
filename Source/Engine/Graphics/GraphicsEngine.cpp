@@ -54,16 +54,20 @@ bool GraphicsEngine::Init(int aHeight, int aWidth, HWND& aWindowHandle)
 		&myContext
 	);
 
-	ID3D11Texture2D* backBufferTexture = {};
+	ID3D11Texture2D* backBufferTexture;
 	result = mySwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&backBufferTexture);
 	if (FAILED(result))
+	{
 		return false;
+	}
 
 	result = myDevice->CreateRenderTargetView(backBufferTexture, nullptr, &myBackBuffer);
 	if (FAILED(result))
+	{
 		return false;
+	}
 
-	D3D11_TEXTURE2D_DESC textureDesc = {};
+	D3D11_TEXTURE2D_DESC textureDesc;
 	backBufferTexture->GetDesc(&textureDesc);
 	backBufferTexture->Release();
 
@@ -72,15 +76,17 @@ bool GraphicsEngine::Init(int aHeight, int aWidth, HWND& aWindowHandle)
 	D3D11_VIEWPORT viewport = { 0 };
 	viewport.TopLeftX = 0.0f;
 	viewport.TopLeftY = 0.0f;
-	viewport.Width = static_cast<float>(textureDesc.Width);
-	viewport.Height = static_cast<float>(textureDesc.Height);
+	viewport.Width = static_cast<float> (textureDesc.Width);
+	viewport.Height = static_cast<float> (textureDesc.Height);
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
 	myContext->RSSetViewports(1, &viewport);
 
-	myTriangle = new Triangle();
+	myTriangle = new Triangle;
 	if (!myTriangle->Init(myDevice.Get()))
+	{
 		return false;
+	}
 
 	return true;
 }
