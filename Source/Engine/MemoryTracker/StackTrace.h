@@ -1,22 +1,23 @@
 #pragma once
-
 #include <functional>
 
 namespace SimpleTracker
 {
 	struct StackTraceImpl;
+
 	class StackTrace
 	{
 	public:
-		StackTrace() : myImpl(nullptr) {}
+		StackTrace();
 
-		static StackTrace CaptureStackTrace(int aSkipDepth);
-		void Print() const;
-		std::size_t ComputeHash() const;
 		bool operator==(const StackTrace& aStackTrace) const noexcept
 		{
 			return myImpl == aStackTrace.myImpl;
 		}
+
+		void Print() const;
+		std::size_t ComputeHash() const;
+		static StackTrace CaptureStackTrace(int aSkipDepth);
 	private:
 		StackTrace(const StackTraceImpl&);
 		const StackTraceImpl* myImpl;

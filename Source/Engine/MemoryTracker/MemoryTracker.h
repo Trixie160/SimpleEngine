@@ -8,6 +8,6 @@ namespace SimpleTracker
 		bool myShouldTrackAllAllocations;
 	};
 
-	void StartMemoryTracking(const MemoryTrackingSettings& trackingSettings);
+	void StartMemoryTracking(const MemoryTrackingSettings& aTrackingSettings);
 	void StopMemoryTrackingAndPrint();
 }

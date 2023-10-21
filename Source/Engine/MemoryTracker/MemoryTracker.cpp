@@ -1,8 +1,6 @@
 #include <windows.h>
 #include <algorithm>
-#include <array>
 #include <mutex>
-#include <unordered_set>
 #include <unordered_map>
 #include <debugapi.h>
 
@@ -19,12 +17,12 @@ struct AllocationEntry
 	StackTrace myStackTrace;
 };
 
-static thread_local bool tIsAllocationInProgress = false;
-static std::mutex locAllocationMapMutex;
-static std::unordered_map<long, AllocationEntry> locAllocationMap;
-static int locTotalAllocationCount = 0;
-static std::unordered_map<StackTrace, int> loStackTraceToAllocationCount;
-static MemoryTrackingSettings locMemoryTrackingSettings;
+static int localTotalAllocationCount = 0;
+static thread_local bool localIsAllocationInProgress = false;
+static std::mutex localAllocationMapMutex;
+static std::unordered_map<long, AllocationEntry> localAllocationMap;
+static std::unordered_map<StackTrace, int> localStackTraceToAllocationCount;
+static MemoryTrackingSettings localMemoryTrackingSettings;
 
 typedef struct _CrtMemBlockHeader
 {
@@ -47,20 +45,20 @@ typedef struct _CrtMemBlockHeader
 	unsigned char               gap[4];
 } _CrtMemBlockHeader;
 
-int AllocHook(int allocType, void* userData, size_t size, int blockType, long requestNumber, const unsigned char*, int)
+int AllocHook(int aAllocType, void* aUserData, size_t aSize, int aBlockType, long aRequestNumber, const unsigned char*, int)
 {
-	if (blockType == _CRT_BLOCK || tIsAllocationInProgress)
+	if (aBlockType == _CRT_BLOCK || localIsAllocationInProgress)
 		return true;
 
 	// Do not track allocations by the memory tracker itself
-	tIsAllocationInProgress = true;
+	localIsAllocationInProgress = true;
 
-	std::lock_guard<std::mutex> guard(locAllocationMapMutex);
+	std::lock_guard<std::mutex> guard(localAllocationMapMutex);
 
 	bool alloc = false;
 	bool free = false;
 
-	switch (allocType)
+	switch (aAllocType)
 	{
 	case _HOOK_ALLOC:
 		alloc = true;
@@ -76,47 +74,47 @@ int AllocHook(int allocType, void* userData, size_t size, int blockType, long re
 
 	if (alloc)
 	{
-		AllocationEntry& entry = locAllocationMap[requestNumber];
+		AllocationEntry& entry = localAllocationMap[aRequestNumber];
 
-		if (locMemoryTrackingSettings.myShouldStoreStackTraces)
+		if (localMemoryTrackingSettings.myShouldStoreStackTraces)
 		{
 			entry.myStackTrace = StackTrace::CaptureStackTrace(1);
-			loStackTraceToAllocationCount[entry.myStackTrace]++;
+			localStackTraceToAllocationCount[entry.myStackTrace]++;
 		}
 
-		entry.mySize = size;
-		locTotalAllocationCount++;
+		entry.mySize = aSize;
+		localTotalAllocationCount++;
 	}
 
 	if (free)
 	{
 		// read request number from header
 		const size_t headerSize = sizeof(_CrtMemBlockHeader);
-		const size_t ptr = (size_t)userData - headerSize;
+		const size_t ptr = (size_t)aUserData - headerSize;
 
 		_CrtMemBlockHeader* pHead;
 		pHead = (_CrtMemBlockHeader*)(ptr);
 
 		long freeRequestNumber = pHead->lRequest;
 
-		locAllocationMap.erase(freeRequestNumber);
+		localAllocationMap.erase(freeRequestNumber);
 	}
 
-	tIsAllocationInProgress = false;
+	localIsAllocationInProgress = false;
 	return true;
 }
 
-void SimpleTracker::StartMemoryTracking(const MemoryTrackingSettings& trackingSettings)
+void SimpleTracker::StartMemoryTracking(const MemoryTrackingSettings& aTrackingSettings)
 {
-	locMemoryTrackingSettings = trackingSettings;
+	localMemoryTrackingSettings = aTrackingSettings;
 	_CrtSetAllocHook(&AllocHook);
 }
 
-void PrintTopLeaks(std::unordered_map<StackTrace, int>& map)
+void PrintTopLeaks(std::unordered_map<StackTrace, int>& aMap)
 {
 	std::vector<std::pair<StackTrace, int>> pairs;
 
-	for (const auto& p : map)
+	for (const auto& p : aMap)
 	{
 		pairs.push_back(p);
 	}
@@ -143,21 +141,21 @@ void PrintTopLeaks(std::unordered_map<StackTrace, int>& map)
 
 void SimpleTracker::StopMemoryTrackingAndPrint()
 {
-	std::lock_guard<std::mutex> guard(locAllocationMapMutex);
+	std::lock_guard<std::mutex> guard(localAllocationMapMutex);
 
 	_CrtSetAllocHook(nullptr);
 
-	if (locMemoryTrackingSettings.myShouldTrackAllAllocations)
+	if (localMemoryTrackingSettings.myShouldTrackAllAllocations)
 	{
 		OutputDebugStringA("================================================================================\n");
 		char buffer[100];
-		sprintf_s(buffer, "== Total Allocation Count: %d\n", locTotalAllocationCount);
+		sprintf_s(buffer, "== Total Allocation Count: %d\n", localTotalAllocationCount);
 		OutputDebugStringA(buffer);
 
-		if (locMemoryTrackingSettings.myShouldStoreStackTraces)
+		if (localMemoryTrackingSettings.myShouldStoreStackTraces)
 		{
 			OutputDebugStringA("== Top 10 Allocations: \n");
-			PrintTopLeaks(loStackTraceToAllocationCount);
+			PrintTopLeaks(localStackTraceToAllocationCount);
 		}
 		else
 		{
@@ -165,7 +163,7 @@ void SimpleTracker::StopMemoryTrackingAndPrint()
 		}
 	}
 
-	if (locAllocationMap.size() == 0)
+	if (localAllocationMap.size() == 0)
 	{
 		OutputDebugStringA("================================================================================\n");
 		OutputDebugStringA("== No memory leaks found! \n");
@@ -175,15 +173,15 @@ void SimpleTracker::StopMemoryTrackingAndPrint()
 	{
 		OutputDebugStringA("================================================================================\n");
 		char buffer[100];
-		sprintf_s(buffer, "== Total Number of Memory Leaks: %d\n", (int)locAllocationMap.size());
+		sprintf_s(buffer, "== Total Number of Memory Leaks: %d\n", (int)localAllocationMap.size());
 		OutputDebugStringA(buffer);
 
-		if (locMemoryTrackingSettings.myShouldStoreStackTraces)
+		if (localMemoryTrackingSettings.myShouldStoreStackTraces)
 		{
 			OutputDebugStringA("================================================================================\n");
 			std::unordered_map<StackTrace, int> stackTraceToLeakCountMap;
 
-			for (const auto& p : locAllocationMap)
+			for (const auto& p : localAllocationMap)
 			{
 				stackTraceToLeakCountMap[p.second.myStackTrace]++;
 			}
@@ -200,7 +198,7 @@ void SimpleTracker::StopMemoryTrackingAndPrint()
 		}
 	}
 
-	locAllocationMap.clear();
+	localAllocationMap.clear();
 }
 
 #else 

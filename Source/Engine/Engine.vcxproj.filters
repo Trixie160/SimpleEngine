@@ -7,17 +7,11 @@
     <Filter Include="Graphics">
       <UniqueIdentifier>{1653CE33-0220-293F-2B39-17E717655ECD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MemAllocator">
-      <UniqueIdentifier>{A58EFC2A-91F1-8BCF-3A77-C48526B95752}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MemoryTracker">
       <UniqueIdentifier>{0A814603-7641-C239-3F7C-0BB7ABFB0616}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{EFAC8DF2-5B8C-0C8E-64A4-9764D00273EF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="StackWalker">
-      <UniqueIdentifier>{21FD7E7C-8DB2-F771-16A7-F148825BEE75}</UniqueIdentifier>
     </Filter>
     <Filter Include="Timer">
       <UniqueIdentifier>{667B2A0E-D28F-52BF-9B11-F61E07E54EF0}</UniqueIdentifier>
@@ -33,17 +27,14 @@
     <ClInclude Include="Graphics\GraphicsEngine.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="MemAllocator\MemAlloc.h">
-      <Filter>MemAllocator</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryTracker\MemoryTracker.h">
       <Filter>MemoryTracker</Filter>
     </ClInclude>
     <ClInclude Include="MemoryTracker\StackTrace.h">
       <Filter>MemoryTracker</Filter>
     </ClInclude>
-    <ClInclude Include="StackWalker\StackWalker.h">
-      <Filter>StackWalker</Filter>
+    <ClInclude Include="MemoryTracker\StackWalker.h">
+      <Filter>MemoryTracker</Filter>
     </ClInclude>
     <ClInclude Include="Timer\Timer.h">
       <Filter>Timer</Filter>
@@ -60,17 +51,14 @@
     <ClCompile Include="Graphics\GraphicsEngine.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="MemAllocator\MemAlloc.cpp">
-      <Filter>MemAllocator</Filter>
-    </ClCompile>
     <ClCompile Include="MemoryTracker\MemoryTracker.cpp">
       <Filter>MemoryTracker</Filter>
     </ClCompile>
     <ClCompile Include="MemoryTracker\StackTrace.cpp">
       <Filter>MemoryTracker</Filter>
     </ClCompile>
-    <ClCompile Include="StackWalker\StackWalker.cpp">
-      <Filter>StackWalker</Filter>
+    <ClCompile Include="MemoryTracker\StackWalker.cpp">
+      <Filter>MemoryTracker</Filter>
     </ClCompile>
     <ClCompile Include="Timer\Timer.cpp">
       <Filter>Timer</Filter>

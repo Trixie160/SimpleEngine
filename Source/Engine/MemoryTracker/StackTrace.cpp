@@ -1,11 +1,11 @@
-//#include "StackWalker/StackWalker.cpp"
-#include "StackTrace.h"
-#include <StackWalker/StackWalker.h>
 #include <array>
 #include <mutex>
 #include <unordered_set>
 #include <unordered_map>
 #include <string_view>
+
+#include "MemoryTracker/StackTrace.h"
+#include "MemoryTracker/StackWalker.h"
 
 using namespace SimpleTracker;
 
@@ -17,6 +17,7 @@ namespace SimpleTracker
 	struct StackTraceImpl
 	{
 		std::array<const char*, STACK_TRACE_MAX_LINES> myLines = {};
+
 		bool operator==(const StackTraceImpl& aStackTraceImpl) const noexcept
 		{
 			return memcmp(myLines.data(), aStackTraceImpl.myLines.data(), sizeof(const char*) * STACK_TRACE_MAX_LINES) == 0;
@@ -43,9 +44,9 @@ namespace std
 
 struct StackTraceLineHash 
 {
-	size_t operator() (const std::array<char, STACK_TRACE_MAX_LINE_LENGTH>& line) const
+	size_t operator() (const std::array<char, STACK_TRACE_MAX_LINE_LENGTH>& aLine) const
 	{
-		return std::hash<std::string_view>()(std::string_view(line.data(), std::strlen(line.data())));
+		return std::hash<std::string_view>()(std::string_view(aLine.data(), std::strlen(aLine.data())));
 	}
 };
 
@@ -56,7 +57,7 @@ public:
 	{
 		LoadModules();
 	}
-	void SetBuffer(std::array<const char*, STACK_TRACE_MAX_LINES>* buffer, int skipCount = 0);
+	void SetBuffer(std::array<const char*, STACK_TRACE_MAX_LINES>* aBuffer, const int aSkipCount = 0);
 protected:
 	virtual void OnOutput(LPCSTR szText);
 	virtual void OnDbgHelpErr(LPCSTR, DWORD, DWORD64) {}; // supress error output
@@ -65,16 +66,16 @@ private:
 	int myCurrentIndex = 0;
 };
 
-static std::unordered_set<std::array<char, STACK_TRACE_MAX_LINE_LENGTH>, StackTraceLineHash> loStackTraceLineCache;
-static std::unordered_set<StackTraceImpl> loStackTraceCache;
-static ToStringStackWalker locStackWalker;
-static std::mutex locStackWalkerMutex;
+static std::unordered_set<std::array<char, STACK_TRACE_MAX_LINE_LENGTH>, StackTraceLineHash> localStackTraceLineCache;
+static std::unordered_set<StackTraceImpl> localStackTraceCache;
+static ToStringStackWalker localStackWalker;
+static std::mutex localStackTraceMutex;
 
-void ToStringStackWalker::SetBuffer(std::array<const char*, STACK_TRACE_MAX_LINES>* buffer, int skipCount)
+void ToStringStackWalker::SetBuffer(std::array<const char*, STACK_TRACE_MAX_LINES>* aBuffer,const int aSkipCount)
 {
-	myBuffer = buffer;
-	myCurrentIndex = -skipCount;
-	m_MaxRecursionCount = STACK_TRACE_MAX_LINES + skipCount;
+	myBuffer = aBuffer;
+	myCurrentIndex = -aSkipCount;
+	m_MaxRecursionCount = STACK_TRACE_MAX_LINES + aSkipCount;
 }
 
 void ToStringStackWalker::OnOutput(LPCSTR szText)
@@ -90,27 +91,36 @@ void ToStringStackWalker::OnOutput(LPCSTR szText)
 
 	if (myCurrentIndex >= STACK_TRACE_MAX_LINES)
 		return;
+
 	std::array<char, STACK_TRACE_MAX_LINE_LENGTH> myLine{};
 	strncpy_s(myLine.data(), STACK_TRACE_MAX_LINE_LENGTH, szText, STACK_TRACE_MAX_LINE_LENGTH);
-	//strncpy(myLine.data(), szText, STACK_TRACE_MAX_LINE_LENGTH);
-	auto pair = loStackTraceLineCache.insert(myLine);
+	auto pair = localStackTraceLineCache.insert(myLine);
 	const char* cachedLine = pair.first->data();
 
 	(*myBuffer)[myCurrentIndex] = cachedLine;
 	myCurrentIndex++;
 }
 
-StackTrace::StackTrace(const StackTraceImpl& aStackTraceImpl) : myImpl(&aStackTraceImpl) {}
+StackTrace::StackTrace(const StackTraceImpl& aStackTraceImpl) 
+	: myImpl(&aStackTraceImpl)
+{
+}
+
+SimpleTracker::StackTrace::StackTrace() 
+	: myImpl(nullptr)
+{
+}
 
 StackTrace StackTrace::CaptureStackTrace(int aSkipDepth)
 {
-	std::lock_guard<std::mutex> guard(locStackWalkerMutex);
+	std::lock_guard<std::mutex> guard(localStackTraceMutex);
 
 	StackTraceImpl impl;
-	locStackWalker.SetBuffer(&impl.myLines, 2+aSkipDepth);
-	locStackWalker.ShowCallstack();
-	locStackWalker.SetBuffer(nullptr);
-	auto it = loStackTraceCache.insert(impl).first;
+	localStackWalker.SetBuffer(&impl.myLines, 2+aSkipDepth);
+	localStackWalker.ShowCallstack();
+	localStackWalker.SetBuffer(nullptr);
+
+	const auto& it = localStackTraceCache.insert(impl).first;
 	return StackTrace(*it);
 }
 
@@ -119,12 +129,14 @@ void StackTrace::Print() const
 	if (myImpl == nullptr)
 	{
 		OutputDebugStringA("Empty Stack Trace\n");
+		return;
 	}
 
-	for (auto line : myImpl->myLines)
+	for (const auto& line : myImpl->myLines)
 	{
 		if (line == nullptr)
 			break;
+
 		OutputDebugStringA(line);
 	}
 }
