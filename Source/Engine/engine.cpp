@@ -2,6 +2,7 @@
 #include "engine.h"
 #include "Graphics/GraphicsEngine.h"
 #include "Timer/Timer.h"
+#include "MemoryTracker/MemoryTracker.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -10,6 +11,10 @@ Engine::Engine()
 	, myGraphicsEngine(nullptr)
 	, myTimer(nullptr)
 {
+	SimpleTracker::MemoryTrackingSettings memoryTrackerSettings = {};
+	memoryTrackerSettings.myShouldStoreStackTraces = false;
+	memoryTrackerSettings.myShouldTrackAllAllocations = true;
+	SimpleTracker::StartMemoryTracking(memoryTrackerSettings);
 }
 
 Engine::~Engine()
@@ -26,6 +31,8 @@ Engine::~Engine()
 	myHWND = nullptr;
 	myGraphicsEngine = nullptr;
 	myTimer = nullptr;
+
+	SimpleTracker::StopMemoryTrackingAndPrint();
 }
 
 void Engine::Init(HINSTANCE& hInstance, const int aWidth, const int aHeight)

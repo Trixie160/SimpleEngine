@@ -52,7 +52,7 @@ workspace "SimpleEngine"
 		targetdir "Bin/"
 		targetname "SimpleEngine_%{cfg.buildcfg}"
 		location "Source/Game"
-		includedirs{ "Source/", "Source/Engine/"}
+		includedirs{ "Source/", "Source/Engine/" ,"Source/Game/"}
 		files {"Source/Game/**.h", "Source/Game/**.cpp", "Source/Game/Resources/**.rc"}
 		links{"Engine"}
 		dependson {"Engine"}
