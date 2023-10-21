@@ -43,6 +43,7 @@
       <Filter>Triangle</Filter>
     </ClInclude>
     <ClInclude Include="engine.h" />
+    <ClInclude Include="global.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Console\Console.cpp">
@@ -67,6 +68,7 @@
       <Filter>Triangle</Filter>
     </ClCompile>
     <ClCompile Include="engine.cpp" />
+    <ClCompile Include="global.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\TrianglePS.hlsl">

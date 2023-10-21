@@ -4,7 +4,7 @@ Timer::Timer()
 	: myDeltaTime(0.0f)
 	, myTotalTime(0.0)
 	, myStartTime(std::chrono::high_resolution_clock::now())
-	, myCapDeltaTime(1.0 / 120)
+	, myCapDeltaTime(1.0 / 60)
 {
 }
 

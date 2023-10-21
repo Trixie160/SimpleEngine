@@ -2,6 +2,9 @@
 #include <fstream>
 
 #include "Triangle.h"
+#include "global.h"
+#include "engine.h"
+#include <iostream>
 
 struct Vertex
 {
@@ -95,11 +98,34 @@ bool Triangle::Init(ID3D11Device* aDevice)
 			return false;
 	}
 
+	{
+		D3D11_BUFFER_DESC timeBufferDesc = {};
+		timeBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		timeBufferDesc.ByteWidth = sizeof(TimeBufferType);
+		timeBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		timeBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+		result = aDevice->CreateBuffer(&timeBufferDesc, nullptr, &myTimeBuffer);
+
+		if (FAILED(result))
+			return false;
+	}
+
 	return true;
 }
 
 void Triangle::Render(ID3D11DeviceContext* aContext)
 {
+	TimeBufferType* timeData;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+	aContext->Map(myTimeBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	timeData = (TimeBufferType*)mappedResource.pData;
+	timeData->elapsedTime = static_cast<float>(SimplyGlobal::GetTotalTime());
+
+	aContext->Unmap(myTimeBuffer.Get(), 0);
+	aContext->VSSetConstantBuffers(0, 1, myTimeBuffer.GetAddressOf());
+
 	aContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	aContext->IASetInputLayout(myInputLayout.Get());
 

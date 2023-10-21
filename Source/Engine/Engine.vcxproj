@@ -112,6 +112,7 @@
     <ClInclude Include="Timer\Timer.h" />
     <ClInclude Include="Triangle\Triangle.h" />
     <ClInclude Include="engine.h" />
+    <ClInclude Include="global.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Console\Console.cpp" />
@@ -122,6 +123,7 @@
     <ClCompile Include="Timer\Timer.cpp" />
     <ClCompile Include="Triangle\Triangle.cpp" />
     <ClCompile Include="engine.cpp" />
+    <ClCompile Include="global.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\TrianglePS.hlsl">

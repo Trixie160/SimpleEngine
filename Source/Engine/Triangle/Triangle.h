@@ -9,6 +9,12 @@ struct ID3D11VertexShader;
 struct ID3D11PixelShader;
 struct ID3D11InputLayout;
 
+struct TimeBufferType
+{
+	float elapsedTime;
+	float padding[3];
+};
+
 class Triangle
 {
 public:
@@ -20,8 +26,10 @@ public:
 private:
 	ComPtr<ID3D11Buffer> myVertexBuffer;
 	ComPtr<ID3D11Buffer> myIndexBuffer;
+	ComPtr<ID3D11Buffer> myTimeBuffer;
 
 	ComPtr<ID3D11VertexShader> myVertexShader;
 	ComPtr<ID3D11PixelShader> myPixelShader;
+	
 	ComPtr<ID3D11InputLayout> myInputLayout;
 };

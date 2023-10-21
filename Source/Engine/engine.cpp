@@ -1,8 +1,9 @@
 #include <cassert>
 #include "engine.h"
+#include "MemoryTracker/MemoryTracker.h"
 #include "Graphics/GraphicsEngine.h"
 #include "Timer/Timer.h"
-#include "MemoryTracker/MemoryTracker.h"
+#include "global.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -39,6 +40,8 @@ void Engine::Init(HINSTANCE& hInstance, const int aWidth, const int aHeight)
 {
 	myHWND = SetupMainWindow(hInstance, aWidth, aHeight);
 	assert(myHWND && "Failed To Create Window");
+
+	SimplyGlobalImpl::SetEngine(this);
 
 	ShowWindow(*myHWND, 1);
 	UpdateWindow(*myHWND);
@@ -99,4 +102,9 @@ void Engine::Render()
 float Engine::GetDeltaTime() const
 {
 	return myTimer->GetDeltaTime();
+}
+
+double Engine::GetTotalTime() const
+{
+	return myTimer->GetTotalTime();
 }
