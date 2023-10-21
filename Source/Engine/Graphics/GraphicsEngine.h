@@ -12,6 +12,8 @@ struct ID3D11DeviceContext;
 struct IDXGISwapChain;
 struct ID3D11RenderTargetView;
 
+class Triangle;
+
 class GraphicsEngine
 {
 public:
@@ -27,4 +29,6 @@ private:
 	ComPtr<ID3D11DeviceContext> myContext;
 	ComPtr<IDXGISwapChain> mySwapChain;
 	ComPtr<ID3D11RenderTargetView> myBackBuffer;
+
+	Triangle* myTriangle;
 };

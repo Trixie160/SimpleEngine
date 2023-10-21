@@ -1,10 +1,23 @@
 #include "GraphicsEngine.h"
 #include <d3d11.h>
 
+#include "Triangle/Triangle.h"
+
 //#define REPORT_DX_WARNINGS
 
-GraphicsEngine::GraphicsEngine() = default;
-GraphicsEngine::~GraphicsEngine() = default;
+GraphicsEngine::GraphicsEngine()
+	: myTriangle(nullptr)
+{
+
+}
+
+GraphicsEngine::~GraphicsEngine()
+{
+	if (myTriangle != nullptr)
+		delete myTriangle;
+
+	myTriangle = nullptr;
+}
 
 bool GraphicsEngine::Init(int aHeight, int aWidth, HWND& aWindowHandle)
 {
@@ -65,6 +78,10 @@ bool GraphicsEngine::Init(int aHeight, int aWidth, HWND& aWindowHandle)
 	viewport.MaxDepth = 1.0f;
 	myContext->RSSetViewports(1, &viewport);
 
+	myTriangle = new Triangle();
+	if (!myTriangle->Init(myDevice.Get()))
+		return false;
+
 	return true;
 }
 
@@ -88,6 +105,8 @@ void GraphicsEngine::Render()
 {
 	const float color[4] = { 0.0f, 0.25f, 0.50f, 1.0f };
 	myContext->ClearRenderTargetView(myBackBuffer.Get(), color);
+
+	myTriangle->Render(myContext.Get());
 
 	mySwapChain->Present(1, 0);
 }

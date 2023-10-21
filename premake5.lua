@@ -17,8 +17,17 @@ workspace "SimpleEngine"
 		targetdir "Lib"
 		objdir "Temp"
 		location "Source/Engine"
-		files {"Source/Engine/**.h", "Source/Engine/**.cpp"}
+		files {"Source/Engine/**.h", "Source/Engine/**.cpp", "Source/Engine/Shaders/**hlsl"}
+		includedirs{"Source/Engine/"}
 		links {"d3d11"}
+
+		shadermodel("5.0")
+
+	filter("files:**PS.hlsl")
+		shadertype("Pixel")
+
+	filter("files:**VS.hlsl")
+		shadertype("Vertex")
 
 	project "Game"
 		kind "WindowedApp"
