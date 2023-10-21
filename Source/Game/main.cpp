@@ -28,8 +28,5 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR,
 		engine.Render();
 	}
 
-	int* leaks = new int();
-	leaks;
-
 	return 0;
 }
