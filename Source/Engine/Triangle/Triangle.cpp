@@ -63,7 +63,7 @@ bool Triangle::Init(ID3D11Device* aDevice)
 	std::ifstream psFile;
 
 	{ //Load shaders
-		vsFile.open("../../Lib/TriangleVS.cso", std::ios::binary);
+		vsFile.open(SHADER_DIR "TriangleVS.cso", std::ios::binary);
 		vsData = { std::istreambuf_iterator<char>(vsFile), std::istreambuf_iterator<char>() };
 		result = aDevice->CreateVertexShader(vsData.data(), vsData.size(), nullptr, &myVertexShader);
 
@@ -72,10 +72,10 @@ bool Triangle::Init(ID3D11Device* aDevice)
 
 		vsFile.close();
 
-		psFile.open("../../Lib/TrianglePS.cso", std::ios::binary);
+		psFile.open(SHADER_DIR "TrianglePS.cso", std::ios::binary);
 		std::string psData = { std::istreambuf_iterator<char>(psFile), std::istreambuf_iterator<char>() };
 		result = aDevice->CreatePixelShader(psData.data(), psData.size(), nullptr, &myPixelShader);
-
+		
 		if (FAILED(result))
 			return false;
 

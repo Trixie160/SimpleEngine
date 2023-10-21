@@ -22,17 +22,24 @@ workspace "SimpleEngine"
 		links {"d3d11"}
 
 		shadermodel("5.0")
+		local shader_dir = "../../Bin/Shaders/"
+		defines { 'SHADER_DIR="' .. shader_dir .. '"' }
+		os.mkdir(shader_dir)
 
-	filter("files:**PS.hlsl")
-		shadertype("Pixel")
+		filter("files:**.hlsl")
+			shaderobjectfileoutput(shader_dir.."%{file.basename}"..".cso")
 
-	filter("files:**VS.hlsl")
-		shadertype("Vertex")
+		filter("files:**PS.hlsl")
+			shadertype("Pixel")
+
+		filter("files:**VS.hlsl")
+			shadertype("Vertex")
 
 	project "Game"
 		kind "WindowedApp"
 		language "C++"
-		targetdir "bin/%{cfg.buildcfg}"
+		targetdir "Bin/"
+		targetname "%{prj.name}_%{cfg.buildcfg}"
 		objdir "Temp"
 		location "Source/Game"
 		files {"Source/Game/**.h", "Source/Game/**.cpp", "Source/Game/Resources/**.rc"}
