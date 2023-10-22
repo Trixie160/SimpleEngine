@@ -1,6 +1,7 @@
 #pragma once
 #include <wrl/client.h>
 #include <string>
+#include <vector>
 
 using Microsoft::WRL::ComPtr;
 struct ID3D11Device;
@@ -31,6 +32,8 @@ struct TriangleData
 	ComPtr<ID3D11PixelShader> pixelShader;
 
 	ComPtr<ID3D11InputLayout> inputLayout;
+
+	int indicesSize;
 };
 
 class Triangle
@@ -42,7 +45,7 @@ public:
 	bool Init(ID3D11Device* aDevice);
 	void Render(ID3D11DeviceContext* aContext);
 private:
-	bool InitBuffers(ID3D11Device* aDevice, Vertex aVertices[], TriangleData& aTriangleData,const std::string& aPSFileName, const std::string& aVSFileName);
+	bool InitBuffers(ID3D11Device* aDevice, const std::vector<Vertex>& aVertices, TriangleData& aTriangleData, const std::string& aPSFileName, const std::string& aVSFileName);
 private:
 	ComPtr<ID3D11Buffer> myTimeBuffer;
 

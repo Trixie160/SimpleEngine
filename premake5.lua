@@ -44,10 +44,10 @@ workspace "SimpleEngine"
 		filter("files:**.hlsl")
 			shaderobjectfileoutput(shader_dir.."%{file.basename}"..".cso")
 
-		filter("files:**PS.hlsl")
+		filter("files:Source/Engine/Shaders/PS/**.hlsl")
 			shadertype("Pixel")
 
-		filter("files:**VS.hlsl")
+		filter("files:Source/Engine/Shaders/VS/**.hlsl")
 			shadertype("Vertex")
 
 	project "Game"

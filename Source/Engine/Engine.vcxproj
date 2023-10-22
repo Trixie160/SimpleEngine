@@ -128,11 +128,15 @@
     <ClCompile Include="global.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\TrianglePS.hlsl">
+    <FxCompile Include="Shaders\PS\TrianglePS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ObjectFileOutput>../../Bin/Shaders/TrianglePS.cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="Shaders\TriangleVS.hlsl">
+    <FxCompile Include="Shaders\PS\TrianglePS_2.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ObjectFileOutput>../../Bin/Shaders/TrianglePS_2.cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\VS\TriangleVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ObjectFileOutput>../../Bin/Shaders/TriangleVS.cso</ObjectFileOutput>
     </FxCompile>

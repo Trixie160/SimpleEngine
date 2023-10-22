@@ -15,24 +15,55 @@ bool Triangle::Init(ID3D11Device* aDevice)
 {
 	HRESULT result;
 
-	Vertex vertices[3] =
+	Vertex triangle[3] =
 	{
 		{-0.7f,0.0f,0,1,1,0,0,1},
 		{-0.5f,0.5f,0,1,0,1,0,1},
 		{-0.3f,0.0f,0,1,0,0,1,1}
 	};
 
-	Vertex vertices2[3] =
-	{
-		{0.3f,0.0f,0,1,1,0,0,1},
-		{0.5f,0.5f,0,1,0,1,0,1},
-		{0.7f,0.0f,0,1,0,0,1,1}
-	};
+	std::vector<Vertex> vertices;
+	vertices.insert(vertices.begin(), std::begin(triangle), std::end(triangle));
 
 	if (!InitBuffers(aDevice, vertices, myTriangle, "TrianglePS.cso", "TriangleVS.cso"))
 		return false;
 
-	if (!InitBuffers(aDevice, vertices2, myTriangle2, "TrianglePS.cso", "TriangleVS.cso"))
+
+	Vertex triangle1[3] =
+	{
+		{0.7f, -0.9f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f},
+		{0.8f, 0.9f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f},
+		{0.9f, -0.9f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f}
+	};
+
+	Vertex triangle2[3] =
+	{
+		{0.6f, -0.9f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f},
+		{0.7f, 0.9f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f},
+		{0.8f, -0.9f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f}
+	};
+
+	Vertex triangle3[3] =
+	{
+		{0.5f, -0.9f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f},
+		{0.6f, 0.9f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f},
+		{0.7f, -0.9f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f}
+	};
+
+	Vertex triangle4[3] =
+	{
+		{0.4f, -0.9f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f},
+		{0.5f, 0.9f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f},
+		{0.6f, -0.9f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f}
+	};
+	
+	std::vector<Vertex> vertices2;
+	vertices2.insert(vertices2.end(), std::begin(triangle1), std::end(triangle1));
+	vertices2.insert(vertices2.end(), std::begin(triangle2), std::end(triangle2));
+	vertices2.insert(vertices2.end(), std::begin(triangle3), std::end(triangle3));
+	vertices2.insert(vertices2.end(), std::begin(triangle4), std::end(triangle4));
+
+	if (!InitBuffers(aDevice, vertices2, myTriangle2, "TrianglePS_2.cso", "TriangleVS.cso"))
 		return false;
 
 	{ //Create Time Buffer
@@ -72,45 +103,53 @@ void Triangle::Render(ID3D11DeviceContext* aContext)
 	aContext->IASetIndexBuffer(myTriangle.indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	aContext->VSSetShader(myTriangle.vertexShader.Get(), nullptr, 0);
 	aContext->PSSetShader(myTriangle.pixelShader.Get(), nullptr, 0);
-	aContext->DrawIndexed(3, 0, 0);
+	aContext->DrawIndexed(myTriangle.indicesSize, 0, 0);
 
 	aContext->IASetInputLayout(myTriangle2.inputLayout.Get());
 	aContext->IASetVertexBuffers(0, 1, myTriangle2.vertexBuffer.GetAddressOf(), &stride, &offset);
 	aContext->IASetIndexBuffer(myTriangle2.indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	aContext->VSSetShader(myTriangle2.vertexShader.Get(), nullptr, 0);
 	aContext->PSSetShader(myTriangle2.pixelShader.Get(), nullptr, 0);
-	aContext->DrawIndexed(3, 0, 0);
+	aContext->DrawIndexed(myTriangle2.indicesSize, 0, 0);
 }
 
-bool Triangle::InitBuffers(ID3D11Device* aDevice, Vertex aVertices[], TriangleData& aTriangleData,const std::string& aPSFileName, const std::string& aVSFileName)
+bool Triangle::InitBuffers(ID3D11Device* aDevice, const std::vector<Vertex>& aVertices, TriangleData& aTriangleData, const std::string& aPSFileName, const std::string& aVSFileName)
 {
 	HRESULT result;
 
 	D3D11_BUFFER_DESC vertexBufferDesc = {};
 	vertexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex) * VERTEX_SIZE;
+	vertexBufferDesc.ByteWidth = sizeof(Vertex) * static_cast<int>(aVertices.size()) * VERTEX_SIZE;
 
 	D3D11_SUBRESOURCE_DATA vertexData = { 0 };
-	vertexData.pSysMem = aVertices;
+	vertexData.pSysMem = aVertices.data();
 
 	result = aDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &aTriangleData.vertexBuffer);
 
 	if (FAILED(result))
 		return false;
 
-	unsigned int indices[INDICES_SIZE] = 
-	{ 
-		0,1,2 
-	};
+	const unsigned int numTriangles = static_cast<unsigned int>(aVertices.size() / 3);
+
+	std::vector<unsigned int> dynamicIndices(numTriangles * 3);
+	for (unsigned int i = 0, j = 0; i < numTriangles; ++i)
+	{
+		dynamicIndices[j++] = i * 3;
+		dynamicIndices[j++] = i * 3 + 1;
+		dynamicIndices[j++] = i * 3 + 2;
+	}
+
+	aTriangleData.indicesSize = static_cast<int>(dynamicIndices.size());
 
 	D3D11_BUFFER_DESC indexBufferDesc = {};
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	indexBufferDesc.ByteWidth = sizeof(unsigned int) * INDICES_SIZE;
+	indexBufferDesc.ByteWidth = sizeof(unsigned int) * aTriangleData.indicesSize;
+
 
 	D3D11_SUBRESOURCE_DATA indexData = { 0 };
-	indexData.pSysMem = indices;
+	indexData.pSysMem = dynamicIndices.data();
 
 	result = aDevice->CreateBuffer(&indexBufferDesc, &indexData, &aTriangleData.indexBuffer);
 

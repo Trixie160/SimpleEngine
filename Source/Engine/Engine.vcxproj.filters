@@ -13,6 +13,12 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{EFAC8DF2-5B8C-0C8E-64A4-9764D00273EF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\PS">
+      <UniqueIdentifier>{210D4262-0DC5-83AF-76CC-5C0B62A31EA0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\VS">
+      <UniqueIdentifier>{E70D4262-D3C5-83AF-3CCD-5C0B28A41EA0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Timer">
       <UniqueIdentifier>{667B2A0E-D28F-52BF-9B11-F61E07E54EF0}</UniqueIdentifier>
     </Filter>
@@ -71,11 +77,14 @@
     <ClCompile Include="global.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\TrianglePS.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="Shaders\PS\TrianglePS.hlsl">
+      <Filter>Shaders\PS</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\TriangleVS.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="Shaders\PS\TrianglePS_2.hlsl">
+      <Filter>Shaders\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\VS\TriangleVS.hlsl">
+      <Filter>Shaders\VS</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
