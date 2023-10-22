@@ -1,6 +1,10 @@
 #pragma once
 #include <Windows.h>
 
+#ifdef _DEBUG
+#include "Console/Console.h"
+#endif
+
 class Timer;
 class GraphicsEngine;
 
@@ -23,4 +27,8 @@ private:
 	GraphicsEngine* myGraphicsEngine;
 	Timer* myTimer;
 	HWND* myHWND;
+
+#ifdef _DEBUG
+	Console myConsole;
+#endif
 };

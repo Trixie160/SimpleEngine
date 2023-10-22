@@ -23,14 +23,17 @@ workspace "SimpleEngine"
 	filter "configurations:Debug"
 		defines { "_DEBUG" }
 		symbols "On"
+		runtime "Debug"
 
 	filter "configurations:Release"
 		defines { "_RELEASE" }
 		optimize "On"
+		runtime "Release"
 
 	project "Engine"
 		kind "StaticLib"
 		targetdir "Lib"
+		targetname("%{prj.name}_%{cfg.buildcfg}")
 		location "Source/Engine"
 		includedirs{"Source/Engine/"}
 		files {"Source/Engine/**.h", "Source/Engine/**.cpp", "Source/Engine/Shaders/**hlsl"}
@@ -54,5 +57,5 @@ workspace "SimpleEngine"
 		location "Source/Game"
 		includedirs{ "Source/", "Source/Engine/" ,"Source/Game/"}
 		files {"Source/Game/**.h", "Source/Game/**.cpp", "Source/Game/Resources/**.rc"}
-		links{"Engine"}
-		dependson {"Engine"}
+		dependson { "Engine" }
+		links { "Engine"}

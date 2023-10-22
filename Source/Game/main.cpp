@@ -1,5 +1,4 @@
 #include "Engine/engine.h"
-#include "Engine/Console/Console.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -19,9 +18,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR,
 {
 	Engine engine;
 	engine.Init(hInstance, 1280, 720);
-
-	Console console;
-	console.Init();
 
 	while (engine.BeginFrame())
 	{

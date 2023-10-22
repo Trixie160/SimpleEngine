@@ -2,6 +2,7 @@
 #include "engine.h"
 #include "MemoryTracker/MemoryTracker.h"
 #include "Graphics/GraphicsEngine.h"
+#include "Console/Console.h"
 #include "Timer/Timer.h"
 #include "global.h"
 
@@ -42,6 +43,10 @@ void Engine::Init(HINSTANCE& hInstance, const int aWidth, const int aHeight)
 	assert(myHWND && "Failed To Create Window");
 
 	SimplyGlobalImpl::SetEngine(this);
+
+#ifdef _DEBUG
+	myConsole.Init();
+#endif
 
 	ShowWindow(*myHWND, 1);
 	UpdateWindow(*myHWND);
