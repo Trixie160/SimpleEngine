@@ -1,6 +1,6 @@
 #include <d3d11.h>
-#include <Windows.h>
 #include "GraphicsEngine.h"
+#include <Windows.h>
 #include "Triangle/Triangle.h"
 
 //#define REPORT_DX_WARNINGS
@@ -84,9 +84,7 @@ bool GraphicsEngine::Init(int aHeight, int aWidth, HWND& aWindowHandle)
 
 	myTriangle = new Triangle;
 	if (!myTriangle->Init(myDevice.Get()))
-	{
 		return false;
-	}
 
 	return true;
 }

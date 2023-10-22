@@ -5,6 +5,7 @@ class Engine;
 class SimplyGlobalImpl
 {
 	friend class Engine;
+	SimplyGlobalImpl();
 	static void SetEngine(Engine* aEngine);
 };
 
