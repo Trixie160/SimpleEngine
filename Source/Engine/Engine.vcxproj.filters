@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{CE7141AB-BA13-6C81-A3CE-7FD58F0FF3D1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Console">
       <UniqueIdentifier>{389F3134-A47E-B0CF-AD96-3BA619F51631}</UniqueIdentifier>
     </Filter>
@@ -19,6 +22,9 @@
     <Filter Include="Shaders\VS">
       <UniqueIdentifier>{E70D4262-D3C5-83AF-3CCD-5C0B28A41EA0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SimpleUtilities">
+      <UniqueIdentifier>{2B8A4039-9715-AEFD-A026-31F20C310AFE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Timer">
       <UniqueIdentifier>{667B2A0E-D28F-52BF-9B11-F61E07E54EF0}</UniqueIdentifier>
     </Filter>
@@ -27,6 +33,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Circle.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Cube.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
     <ClInclude Include="Console\Console.h">
       <Filter>Console</Filter>
     </ClInclude>
@@ -42,6 +57,24 @@
     <ClInclude Include="MemoryTracker\StackWalker.h">
       <Filter>MemoryTracker</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleUtilities\InputManager.h">
+      <Filter>SimpleUtilities</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleUtilities\Matrix4x4.h">
+      <Filter>SimpleUtilities</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleUtilities\Vector.h">
+      <Filter>SimpleUtilities</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleUtilities\Vector2.h">
+      <Filter>SimpleUtilities</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleUtilities\Vector3.h">
+      <Filter>SimpleUtilities</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleUtilities\Vector4.h">
+      <Filter>SimpleUtilities</Filter>
+    </ClInclude>
     <ClInclude Include="Timer\Timer.h">
       <Filter>Timer</Filter>
     </ClInclude>
@@ -52,6 +85,15 @@
     <ClInclude Include="global.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Circle.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Cube.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
     <ClCompile Include="Console\Console.cpp">
       <Filter>Console</Filter>
     </ClCompile>
@@ -66,6 +108,9 @@
     </ClCompile>
     <ClCompile Include="MemoryTracker\StackWalker.cpp">
       <Filter>MemoryTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleUtilities\InputManager.cpp">
+      <Filter>SimpleUtilities</Filter>
     </ClCompile>
     <ClCompile Include="Timer\Timer.cpp">
       <Filter>Timer</Filter>
@@ -82,6 +127,9 @@
     </FxCompile>
     <FxCompile Include="Shaders\PS\TrianglePS_2.hlsl">
       <Filter>Shaders\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\VS\Test.hlsl">
+      <Filter>Shaders\VS</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\VS\TriangleVS.hlsl">
       <Filter>Shaders\VS</Filter>

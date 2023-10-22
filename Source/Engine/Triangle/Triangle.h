@@ -50,5 +50,4 @@ private:
 	ComPtr<ID3D11Buffer> myTimeBuffer;
 
 	TriangleData myTriangle;
-	TriangleData myTriangle2;
 };

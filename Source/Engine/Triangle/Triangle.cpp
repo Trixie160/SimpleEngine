@@ -26,43 +26,6 @@ bool Triangle::Init(ID3D11Device* aDevice)
 		return false;
 
 
-	Vertex triangle1[3] =
-	{
-		{0.7f, -0.9f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f},
-		{0.8f, 0.9f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f},
-		{0.9f, -0.9f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f}
-	};
-
-	Vertex triangle2[3] =
-	{
-		{0.6f, -0.9f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f},
-		{0.7f, 0.9f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f},
-		{0.8f, -0.9f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f}
-	};
-
-	Vertex triangle3[3] =
-	{
-		{0.5f, -0.9f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f},
-		{0.6f, 0.9f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f},
-		{0.7f, -0.9f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f}
-	};
-
-	Vertex triangle4[3] =
-	{
-		{0.4f, -0.9f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f},
-		{0.5f, 0.9f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f},
-		{0.6f, -0.9f, 0.f, 1.f, 0.f, 0.f, 1.f, 1.f}
-	};
-	
-	std::vector<Vertex> vertices2;
-	vertices2.insert(vertices2.end(), std::begin(triangle1), std::end(triangle1));
-	vertices2.insert(vertices2.end(), std::begin(triangle2), std::end(triangle2));
-	vertices2.insert(vertices2.end(), std::begin(triangle3), std::end(triangle3));
-	vertices2.insert(vertices2.end(), std::begin(triangle4), std::end(triangle4));
-
-	if (!InitBuffers(aDevice, vertices2, myTriangle2, "TrianglePS_2.cso", "TriangleVS.cso"))
-		return false;
-
 	{ //Create Time Buffer
 		D3D11_BUFFER_DESC timeBufferDesc = {};
 		timeBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -101,13 +64,6 @@ void Triangle::Render(ID3D11DeviceContext* aContext)
 	aContext->VSSetShader(myTriangle.vertexShader.Get(), nullptr, 0);
 	aContext->PSSetShader(myTriangle.pixelShader.Get(), nullptr, 0);
 	aContext->DrawIndexed(myTriangle.indicesSize, 0, 0);
-
-	aContext->IASetInputLayout(myTriangle2.inputLayout.Get());
-	aContext->IASetVertexBuffers(0, 1, myTriangle2.vertexBuffer.GetAddressOf(), &stride, &offset);
-	aContext->IASetIndexBuffer(myTriangle2.indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	aContext->VSSetShader(myTriangle2.vertexShader.Get(), nullptr, 0);
-	aContext->PSSetShader(myTriangle2.pixelShader.Get(), nullptr, 0);
-	aContext->DrawIndexed(myTriangle2.indicesSize, 0, 0);
 }
 
 bool Triangle::InitBuffers(ID3D11Device* aDevice, const std::vector<Vertex>& aVertices, TriangleData& aTriangleData, const std::string& aPSFileName, const std::string& aVSFileName)

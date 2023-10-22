@@ -2,20 +2,36 @@
 #include "GraphicsEngine.h"
 #include <Windows.h>
 #include "Triangle/Triangle.h"
+#include "Camera/Camera.h"
 
 //#define REPORT_DX_WARNINGS
 
+struct FrameBufferData
+{
+	SimpleUtilities::Matrix4x4f worldToClipMatrix;
+};
+
+struct ObjectBufferData
+{
+	SimpleUtilities::Matrix4x4f modelToWorldMatrix;
+};
+
 GraphicsEngine::GraphicsEngine()
 	: myTriangle(nullptr)
+	, myCamera(new Camera)
+	, myColor{ 0.0f, 0.25f, 0.50f, 1.0f }
 {
-
 }
 
 GraphicsEngine::~GraphicsEngine()
 {
+	if (myCamera != nullptr)
+		delete myCamera;
+
 	if (myTriangle != nullptr)
 		delete myTriangle;
 
+	myCamera = nullptr;
 	myTriangle = nullptr;
 }
 
@@ -86,6 +102,27 @@ bool GraphicsEngine::Init(int aHeight, int aWidth, HWND& aWindowHandle)
 	if (!myTriangle->Init(myDevice.Get()))
 		return false;
 
+
+	{ //Test trying to Render 3D Triangle & Cube
+		D3D11_BUFFER_DESC bufferDescription = { 0 };
+		bufferDescription.Usage = D3D11_USAGE_DYNAMIC;
+		bufferDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bufferDescription.ByteWidth = sizeof(FrameBufferData);
+
+		result = myDevice->CreateBuffer(&bufferDescription, nullptr, &myFrameBuffer);
+
+		if (FAILED(result))
+			return false;
+
+		bufferDescription.ByteWidth = sizeof(ObjectBufferData);
+
+		result = myDevice->CreateBuffer(&bufferDescription, nullptr, &myObjectBuffer);
+
+		if (FAILED(result))
+			return false;
+	}
+
 	return true;
 }
 
@@ -107,10 +144,35 @@ bool GraphicsEngine::BeginFrame()
 
 void GraphicsEngine::Render()
 {
-	const float color[4] = { 0.0f, 0.25f, 0.50f, 1.0f };
-	myContext->ClearRenderTargetView(myBackBuffer.Get(), color);
+	myContext->ClearRenderTargetView(myBackBuffer.Get(), myColor);
 
 	myTriangle->Render(myContext.Get());
 
+	Test(); //Trying to draw 3D Cube & Triangle
+
 	mySwapChain->Present(1, 0);
+}
+
+void GraphicsEngine::Test()
+{
+	{
+		FrameBufferData frameBufferData = {};
+		frameBufferData.worldToClipMatrix = myCamera->WorldToClipmatrix(myCamera->GetModelToWorldMatrix());
+		D3D11_MAPPED_SUBRESOURCE mappedBuffer = {};
+		myContext->Map(myFrameBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
+		memcpy(mappedBuffer.pData, &frameBufferData, sizeof(FrameBufferData));
+		myContext->Unmap(myFrameBuffer.Get(), 0);
+		myContext->VSSetConstantBuffers(0, 1, myFrameBuffer.GetAddressOf());
+	}
+
+	{
+		ObjectBufferData objectBufferData = {};
+		objectBufferData.modelToWorldMatrix = SimpleUtilities::Matrix4x4f();
+		D3D11_MAPPED_SUBRESOURCE mappedBuffer = {};
+		myContext->Map(myObjectBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
+		memcpy(mappedBuffer.pData, &objectBufferData, sizeof(ObjectBufferData));
+		myContext->Unmap(myObjectBuffer.Get(), 0);
+		myContext->VSSetConstantBuffers(1, 1, myObjectBuffer.GetAddressOf());
+	}
+
 }
