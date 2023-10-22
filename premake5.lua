@@ -52,7 +52,7 @@ workspace "SimpleEngine"
 
 	project "Game"
 		kind "WindowedApp"
-		targetdir "Bin/"
+		targetdir "Bin/%{cfg.buildcfg}"
 		targetname "SimpleEngine_%{cfg.buildcfg}"
 		location "Source/Game"
 		includedirs{ "Source/", "Source/Engine/" ,"Source/Game/"}

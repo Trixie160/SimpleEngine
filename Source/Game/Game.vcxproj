@@ -41,14 +41,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\Bin\</OutDir>
+    <OutDir>..\..\Bin\Debug\</OutDir>
     <IntDir>..\..\Temp\Debug\Game\</IntDir>
     <TargetName>SimpleEngine_Debug</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\Bin\</OutDir>
+    <OutDir>..\..\Bin\Release\</OutDir>
     <IntDir>..\..\Temp\Release\Game\</IntDir>
     <TargetName>SimpleEngine_Release</TargetName>
     <TargetExt>.exe</TargetExt>

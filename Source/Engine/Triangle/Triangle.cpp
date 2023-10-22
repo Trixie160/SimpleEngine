@@ -5,9 +5,6 @@
 #include "global.h"
 #include "Triangle.h"
 
-constexpr unsigned int INDICES_SIZE = 3;
-constexpr unsigned int VERTEX_SIZE = 3;
-
 Triangle::Triangle() = default;
 Triangle::~Triangle() = default;
 
@@ -120,7 +117,7 @@ bool Triangle::InitBuffers(ID3D11Device* aDevice, const std::vector<Vertex>& aVe
 	D3D11_BUFFER_DESC vertexBufferDesc = {};
 	vertexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex) * static_cast<int>(aVertices.size()) * VERTEX_SIZE;
+	vertexBufferDesc.ByteWidth = sizeof(Vertex) * static_cast<int>(aVertices.size());
 
 	D3D11_SUBRESOURCE_DATA vertexData = { 0 };
 	vertexData.pSysMem = aVertices.data();
