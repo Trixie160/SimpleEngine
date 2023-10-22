@@ -114,6 +114,8 @@
     <ClInclude Include="MemoryTracker\MemoryTracker.h" />
     <ClInclude Include="MemoryTracker\StackTrace.h" />
     <ClInclude Include="MemoryTracker\StackWalker.h" />
+    <ClInclude Include="Model\Model.h" />
+    <ClInclude Include="Shaders\Shader.h" />
     <ClInclude Include="SimpleUtilities\InputManager.h" />
     <ClInclude Include="SimpleUtilities\Matrix4x4.h" />
     <ClInclude Include="SimpleUtilities\Vector.h" />
@@ -134,6 +136,8 @@
     <ClCompile Include="MemoryTracker\MemoryTracker.cpp" />
     <ClCompile Include="MemoryTracker\StackTrace.cpp" />
     <ClCompile Include="MemoryTracker\StackWalker.cpp" />
+    <ClCompile Include="Model\Model.cpp" />
+    <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="SimpleUtilities\InputManager.cpp" />
     <ClCompile Include="Timer\Timer.cpp" />
     <ClCompile Include="Triangle\Triangle.cpp" />
@@ -157,6 +161,9 @@
       <ShaderType>Vertex</ShaderType>
       <ObjectFileOutput>../../Bin/Shaders/TriangleVS.cso</ObjectFileOutput>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Common.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

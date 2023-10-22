@@ -28,6 +28,7 @@ public:
 	void SetFoV(const float aFoV);
 public:
 	SimpleUtilities::Matrix4x4f GetModelToWorldMatrix() const;
+	SimpleUtilities::Matrix4x4f GetProjectionMatrix() const;
 	SimpleUtilities::Matrix4x4f GetViewMatrix() const;
 	SimpleUtilities::Vector3f GetPosition() const;
 	SimpleUtilities::Vector3f GetForward() const;

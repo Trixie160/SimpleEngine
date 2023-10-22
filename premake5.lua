@@ -36,7 +36,7 @@ workspace "SimpleEngine"
 		targetname("%{prj.name}_%{cfg.buildcfg}")
 		location "Source/Engine"
 		includedirs{"Source/Engine/"}
-		files {"Source/Engine/**.h", "Source/Engine/**.cpp", "Source/Engine/Shaders/**hlsl"}
+		files {"Source/Engine/**.h", "Source/Engine/**.cpp", "Source/Engine/Shaders/**.hlsl" , "Source/Engine/Shaders/**.hlsli"}
 		links {"d3d11"}
 
 		shadermodel("5.0")

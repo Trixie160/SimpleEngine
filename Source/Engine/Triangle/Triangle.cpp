@@ -12,19 +12,8 @@ bool Triangle::Init(ID3D11Device* aDevice)
 {
 	HRESULT result;
 
-	Vertex triangle[3] =
-	{
-		{-0.7f,0.0f,0,1,1,0,0,1},
-		{-0.5f,0.5f,0,1,0,1,0,1},
-		{-0.3f,0.0f,0,1,0,0,1,1}
-	};
-
-	std::vector<Vertex> vertices;
-	vertices.insert(vertices.begin(), std::begin(triangle), std::end(triangle));
-
-	if (!InitBuffers(aDevice, vertices, myTriangle, "TrianglePS.cso", "TriangleVS.cso"))
+	if (!InitBuffers(aDevice, myTriangle, "TrianglePS.cso", "TriangleVS.cso"))
 		return false;
-
 
 	{ //Create Time Buffer
 		D3D11_BUFFER_DESC timeBufferDesc = {};
@@ -55,7 +44,7 @@ void Triangle::Render(ID3D11DeviceContext* aContext)
 
 	aContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	unsigned int stride = sizeof(Vertex);
+	unsigned int stride = sizeof(Vertex2);
 	unsigned int offset = 0;
 
 	aContext->IASetInputLayout(myTriangle.inputLayout.Get());
@@ -66,34 +55,37 @@ void Triangle::Render(ID3D11DeviceContext* aContext)
 	aContext->DrawIndexed(myTriangle.indicesSize, 0, 0);
 }
 
-bool Triangle::InitBuffers(ID3D11Device* aDevice, const std::vector<Vertex>& aVertices, TriangleData& aTriangleData, const std::string& aPSFileName, const std::string& aVSFileName)
+bool Triangle::InitBuffers(ID3D11Device* aDevice, TriangleData& aTriangleData, const std::string& aPSFileName, const std::string& aVSFileName)
 {
 	HRESULT result;
+
+	Vertex2 vertices[3] =
+	{
+		{-0.7f,0.0f,0,1,1,0,0,1},
+		{-0.5f,0.5f,0,1,0,1,0,1},
+		{-0.3f,0.0f,0,1,0,0,1,1}
+	};
+
+	unsigned int indices[3] =
+	{
+		0, 1, 2,
+	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc = {};
 	vertexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex) * static_cast<int>(aVertices.size());
+	vertexBufferDesc.ByteWidth = sizeof(vertices);
 
 	D3D11_SUBRESOURCE_DATA vertexData = { 0 };
-	vertexData.pSysMem = aVertices.data();
+	vertexData.pSysMem = vertices;
 
 	result = aDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &aTriangleData.vertexBuffer);
 
 	if (FAILED(result))
 		return false;
 
-	const unsigned int numTriangles = static_cast<unsigned int>(aVertices.size() / 3);
 
-	std::vector<unsigned int> dynamicIndices(numTriangles * 3);
-	for (unsigned int i = 0, j = 0; i < numTriangles; ++i)
-	{
-		dynamicIndices[j++] = i * 3;
-		dynamicIndices[j++] = i * 3 + 1;
-		dynamicIndices[j++] = i * 3 + 2;
-	}
-
-	aTriangleData.indicesSize = static_cast<int>(dynamicIndices.size());
+	aTriangleData.indicesSize = 3;
 
 	D3D11_BUFFER_DESC indexBufferDesc = {};
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -102,7 +94,7 @@ bool Triangle::InitBuffers(ID3D11Device* aDevice, const std::vector<Vertex>& aVe
 
 
 	D3D11_SUBRESOURCE_DATA indexData = { 0 };
-	indexData.pSysMem = dynamicIndices.data();
+	indexData.pSysMem = indices;
 
 	result = aDevice->CreateBuffer(&indexBufferDesc, &indexData, &aTriangleData.indexBuffer);
 

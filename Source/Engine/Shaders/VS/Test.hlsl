@@ -28,7 +28,7 @@ PixelInputType main (VertexInputType aInput)
     
     float4 vertexObjectPos = aInput.position;
     float4 vertexWorldPos = mul(modelToWorld, vertexObjectPos);
-    float vertexClipPos = mul(worldToClipMatrix, vertexWorldPos);
+    float4 vertexClipPos = mul(worldToClipMatrix, vertexWorldPos);
     
     output.position = vertexClipPos;
     output.color = aInput.color;

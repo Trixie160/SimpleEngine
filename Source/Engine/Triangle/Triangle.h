@@ -17,7 +17,7 @@ struct TimeBufferType
 	float padding[3];
 };
 
-struct Vertex
+struct Vertex2
 {
 	float x, y, z, w;
 	float r, g, b, a;
@@ -45,7 +45,7 @@ public:
 	bool Init(ID3D11Device* aDevice);
 	void Render(ID3D11DeviceContext* aContext);
 private:
-	bool InitBuffers(ID3D11Device* aDevice, const std::vector<Vertex>& aVertices, TriangleData& aTriangleData, const std::string& aPSFileName, const std::string& aVSFileName);
+	bool InitBuffers(ID3D11Device* aDevice, TriangleData& aTriangleData, const std::string& aPSFileName, const std::string& aVSFileName);
 private:
 	ComPtr<ID3D11Buffer> myTimeBuffer;
 

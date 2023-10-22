@@ -13,6 +13,9 @@
     <Filter Include="MemoryTracker">
       <UniqueIdentifier>{0A814603-7641-C239-3F7C-0BB7ABFB0616}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{D6F3AE0D-4208-D7BE-0B8A-7A1E775DD3EF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{EFAC8DF2-5B8C-0C8E-64A4-9764D00273EF}</UniqueIdentifier>
     </Filter>
@@ -56,6 +59,12 @@
     </ClInclude>
     <ClInclude Include="MemoryTracker\StackWalker.h">
       <Filter>MemoryTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\Shader.h">
+      <Filter>Shaders</Filter>
     </ClInclude>
     <ClInclude Include="SimpleUtilities\InputManager.h">
       <Filter>SimpleUtilities</Filter>
@@ -109,6 +118,12 @@
     <ClCompile Include="MemoryTracker\StackWalker.cpp">
       <Filter>MemoryTracker</Filter>
     </ClCompile>
+    <ClCompile Include="Model\Model.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders\Shader.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
     <ClCompile Include="SimpleUtilities\InputManager.cpp">
       <Filter>SimpleUtilities</Filter>
     </ClCompile>
@@ -134,5 +149,10 @@
     <FxCompile Include="Shaders\VS\TriangleVS.hlsl">
       <Filter>Shaders\VS</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Common.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

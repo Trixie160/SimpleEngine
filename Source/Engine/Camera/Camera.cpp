@@ -177,6 +177,11 @@ SimpleUtilities::Matrix4x4f Camera::GetModelToWorldMatrix() const
 	return myModelToWorldTransform;
 }
 
+SimpleUtilities::Matrix4x4f Camera::GetProjectionMatrix() const
+{
+	return myProjectionMatrix;
+}
+
 SimpleUtilities::Matrix4x4f Camera::GetViewMatrix() const
 {
 	const SimpleUtilities::Vector3f& position = GetPosition();

@@ -6,16 +6,6 @@
 
 //#define REPORT_DX_WARNINGS
 
-struct FrameBufferData
-{
-	SimpleUtilities::Matrix4x4f worldToClipMatrix;
-};
-
-struct ObjectBufferData
-{
-	SimpleUtilities::Matrix4x4f modelToWorldMatrix;
-};
-
 GraphicsEngine::GraphicsEngine()
 	: myTriangle(nullptr)
 	, myCamera(new Camera)
@@ -87,26 +77,49 @@ void GraphicsEngine::Render()
 	mySwapChain->Present(1, 0);
 }
 
+void GraphicsEngine::Draw(Model& aModel, Shader& aShader)
+{
+	ComPtr<ID3D11Buffer> vertexBuffer = aModel.GetVertexBuffer();
+	ComPtr<ID3D11Buffer> indexBuffer = aModel.GetIndexBuffer();
+
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
+
+	myContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+	myContext->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	myContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	aShader.SetShader(myContext.Get());
+
+	ObjectBufferData objectBufferData;
+	objectBufferData.modelToWorldMatrix = aModel.GetModelToWorldMatrix();
+
+	myContext->DrawIndexed(aModel.GetIndexCount(), 0, 0);
+}
+
 void GraphicsEngine::Test()
 {
 	{
 		FrameBufferData frameBufferData = {};
-		frameBufferData.worldToClipMatrix = myCamera->WorldToClipMatrix(myCamera->GetModelToWorldMatrix());
+		frameBufferData.worldToClipMatrix = SimpleUtilities::Matrix4x4f::GetFastInverse(myCamera->GetModelToWorldMatrix()) * myCamera->GetProjectionMatrix();
+
 		D3D11_MAPPED_SUBRESOURCE mappedBuffer = {};
 		myContext->Map(myFrameBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
 		memcpy(mappedBuffer.pData, &frameBufferData, sizeof(FrameBufferData));
 		myContext->Unmap(myFrameBuffer.Get(), 0);
 		myContext->VSSetConstantBuffers(0, 1, myFrameBuffer.GetAddressOf());
+		myContext->UpdateSubresource(myFrameBuffer.Get(), 0, nullptr, &frameBufferData, 0, 0);
 	}
 
 	{
 		ObjectBufferData objectBufferData = {};
-		objectBufferData.modelToWorldMatrix = SimpleUtilities::Matrix4x4f();
+		objectBufferData.modelToWorldMatrix = SimpleUtilities::Matrix4x4f::GetFastInverse(myCamera->GetModelToWorldMatrix()) * myCamera->GetProjectionMatrix();
 		D3D11_MAPPED_SUBRESOURCE mappedBuffer = {};
 		myContext->Map(myObjectBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
 		memcpy(mappedBuffer.pData, &objectBufferData, sizeof(ObjectBufferData));
 		myContext->Unmap(myObjectBuffer.Get(), 0);
 		myContext->VSSetConstantBuffers(1, 1, myObjectBuffer.GetAddressOf());
+		myContext->UpdateSubresource(myFrameBuffer.Get(), 0, nullptr, &objectBufferData, 0, 0);
 	}
 
 }
