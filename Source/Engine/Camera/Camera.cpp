@@ -94,7 +94,7 @@ SimpleUtilities::Vector2f Camera::ProjectionToPixel(SimpleUtilities::Vector4f aV
 	return SimpleUtilities::Vector2f(aVector.x * myResolution.x / 2.0f + myResolution.x / 2.0f, aVector.y * myResolution.y / 2.0f + myResolution.y / 2.0f);
 }
 
-SimpleUtilities::Matrix4x4f Camera::WorldToClipmatrix(const SimpleUtilities::Matrix4x4f& aObjectModelToWorldTransform)
+SimpleUtilities::Matrix4x4f Camera::WorldToClipMatrix(const SimpleUtilities::Matrix4x4f& aObjectModelToWorldTransform)
 {
 	SimpleUtilities::Matrix4x4f clipMatrix = myProjectionMatrix * GetViewMatrix() * aObjectModelToWorldTransform;
 	return clipMatrix;

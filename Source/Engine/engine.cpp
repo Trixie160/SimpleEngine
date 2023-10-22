@@ -52,7 +52,8 @@ void Engine::Init(HINSTANCE& hInstance, const int aWidth, const int aHeight)
 	UpdateWindow(*myHWND);
 
 	myGraphicsEngine = new GraphicsEngine();
-	myGraphicsEngine->Init(aHeight, aWidth, *myHWND);
+	bool success = myGraphicsEngine->Init(aHeight, aWidth, *myHWND);
+	assert(success && "Failed To Init Graphics Engine");
 
 	myTimer = new Timer();
 }
@@ -99,7 +100,7 @@ bool Engine::BeginFrame()
 	return myGraphicsEngine->BeginFrame();
 }
 
-void Engine::Render()
+void Engine::EndFrame()
 {
 	myGraphicsEngine->Render();
 }

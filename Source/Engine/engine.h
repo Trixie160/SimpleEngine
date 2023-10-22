@@ -17,7 +17,7 @@ public:
 	void Init(HINSTANCE& hInstance, const int aWidth, const int aHeight);
 
 	bool BeginFrame();
-	void Render();
+	void EndFrame();
 public:
 	float GetDeltaTime() const;
 	double GetTotalTime() const;
