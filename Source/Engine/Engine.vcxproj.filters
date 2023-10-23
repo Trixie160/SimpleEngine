@@ -92,6 +92,7 @@
     </ClInclude>
     <ClInclude Include="engine.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera\Camera.cpp">
@@ -135,6 +136,7 @@
     </ClCompile>
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="global.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PS\TrianglePS.hlsl">

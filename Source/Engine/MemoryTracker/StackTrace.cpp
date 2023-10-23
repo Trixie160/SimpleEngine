@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <array>
 #include <mutex>
 #include <unordered_set>

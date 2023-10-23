@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <cassert>
 #include "engine.h"
 #include "MemoryTracker/MemoryTracker.h"

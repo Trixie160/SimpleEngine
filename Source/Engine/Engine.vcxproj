@@ -53,7 +53,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SHADER_DIR="../../Bin/Shaders/";_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -66,6 +67,7 @@
     </ClCompile>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
+      <AdditionalOptions>/WX %(AdditionalOptions)</AdditionalOptions>
     </FxCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -78,7 +80,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SHADER_DIR="../../Bin/Shaders/";_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -94,6 +97,7 @@
     </ClCompile>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
+      <AdditionalOptions>/WX %(AdditionalOptions)</AdditionalOptions>
     </FxCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,6 +130,7 @@
     <ClInclude Include="Triangle\Triangle.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera\Camera.cpp" />
@@ -143,6 +148,9 @@
     <ClCompile Include="Triangle\Triangle.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="global.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PS\TrianglePS.hlsl">

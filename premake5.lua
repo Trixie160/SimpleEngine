@@ -39,7 +39,11 @@ workspace "SimpleEngine"
 		files {"Source/Engine/**.h", "Source/Engine/**.cpp", "Source/Engine/Shaders/**.hlsl" , "Source/Engine/Shaders/**.hlsli"}
 		links {"d3d11"}
 
+		pchheader "stdafx.h"
+		pchsource "Source/Engine/stdafx.cpp"
+
 		shadermodel("5.0")
+		shaderoptions({"/WX"})
 		
 		filter("files:**.hlsl")
 			shaderobjectfileoutput(shader_dir.."%{file.basename}"..".cso")
@@ -49,6 +53,7 @@ workspace "SimpleEngine"
 
 		filter("files:Source/Engine/Shaders/VS/**.hlsl")
 			shadertype("Vertex")
+
 
 	project "Game"
 		kind "WindowedApp"

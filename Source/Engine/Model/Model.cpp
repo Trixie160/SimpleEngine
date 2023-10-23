@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <cassert>
 #include <d3d11.h>
 #include "Model/Model.h"

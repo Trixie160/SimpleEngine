@@ -1,3 +1,4 @@
+#include "stdafx.h"
 //#include "tge/engine.h"
 //#include "Cube.h"
 //#include "CommonUtilities/InputManager.h"

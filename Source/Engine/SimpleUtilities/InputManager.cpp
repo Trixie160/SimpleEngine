@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <windowsx.h>
 #include "SimpleUtilities/InputManager.h"
 
