@@ -1,5 +1,4 @@
 #pragma once
-#include <Windows.h>
 
 #ifdef _DEBUG
 #include "Console/Console.h"

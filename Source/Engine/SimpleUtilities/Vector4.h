@@ -196,5 +196,4 @@ namespace SimpleUtilities
 	{
 		return aOS << "{X: " << aVector.x << " Y: " << aVector.y << " Z: " << aVector.z << " W: " << aVector.w << "}";
 	}
-
 }

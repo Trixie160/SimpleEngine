@@ -3,9 +3,12 @@
 #include "engine.h"
 #include "MemoryTracker/MemoryTracker.h"
 #include "Graphics/GraphicsEngine.h"
-#include "Console/Console.h"
 #include "Timer/Timer.h"
 #include "global.h"
+
+#ifdef _DEBUG
+#include "Console/Console.h"
+#endif
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 

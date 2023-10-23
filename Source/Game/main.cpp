@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Engine/engine.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

@@ -17,7 +17,8 @@ workspace "SimpleEngine"
 
 	configurations {
 		"Debug",
-		"Release"
+		"Release",
+		"Simple"
 	}
 
 	filter "configurations:Debug"
@@ -28,6 +29,11 @@ workspace "SimpleEngine"
 	filter "configurations:Release"
 		defines { "_RELEASE" }
 		optimize "On"
+		runtime "Release"
+
+	filter "configurations:Simple"
+		defines { "_SIMPLE" }
+		optimize "Speed"
 		runtime "Release"
 
 	project "Engine"
@@ -54,6 +60,13 @@ workspace "SimpleEngine"
 		filter("files:Source/Engine/Shaders/VS/**.hlsl")
 			shadertype("Vertex")
 
+	project "External"
+		kind "StaticLib"
+		targetdir "Lib"
+		targetname("%{prj.name}_%{cfg.buildcfg}")
+		location "Source/External"
+		includedirs{ "Source/External/" }
+		files {"Source/External/**.h", "Source/External/**.cpp"}
 
 	project "Game"
 		kind "WindowedApp"

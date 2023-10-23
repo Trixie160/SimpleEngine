@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <d3d11.h>
 #include "GraphicsEngine.h"
 #include "Triangle/Triangle.h"
 #include "Camera/Camera.h"

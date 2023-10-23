@@ -1,19 +1,8 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
-
-#include <wrl/client.h>
 #include "Model/Model.h"
 #include "Shaders/Shader.h"
 
 using Microsoft::WRL::ComPtr;
-
-struct ID3D11Device;
-struct ID3D11DeviceContext;
-struct IDXGISwapChain;
-struct ID3D11RenderTargetView;
-struct ID3D11DepthStencilView;
-struct ID3D11Buffer;
 
 class Camera;
 class Triangle;
