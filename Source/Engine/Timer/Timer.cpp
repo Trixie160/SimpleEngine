@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Timer.h"
 
+#undef min
+
 Timer::Timer()
 	: myDeltaTime(0.0f)
 	, myTotalTime(0.0)

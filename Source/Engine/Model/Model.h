@@ -1,8 +1,5 @@
 #pragma once
 #include <wrl/client.h>
-#include <vector>
-#include "SimpleUtilities/Matrix4x4.h"
-#include "SimpleUtilities/Vector4.h"
 
 using Microsoft::WRL::ComPtr;
 

@@ -3,7 +3,6 @@
 #define NOMINMAX
 
 #include <wrl/client.h>
-#include "SimpleUtilities/Matrix4x4.h"
 #include "Model/Model.h"
 #include "Shaders/Shader.h"
 

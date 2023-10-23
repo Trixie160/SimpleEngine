@@ -1,7 +1,5 @@
 #pragma once
 #include <wrl/client.h>
-#include <string>
-#include <vector>
 
 using Microsoft::WRL::ComPtr;
 struct ID3D11Device;

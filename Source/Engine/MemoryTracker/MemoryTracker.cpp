@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include <windows.h>
-#include <algorithm>
 #include <mutex>
 #include <unordered_map>
 #include <debugapi.h>

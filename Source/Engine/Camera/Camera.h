@@ -1,6 +1,4 @@
 #pragma once
-#include "SimpleUtilities/Matrix4x4.h"
-#include "SimpleUtilities/Vector.h"
 
 namespace SimpleUtilities
 {

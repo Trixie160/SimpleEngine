@@ -1,8 +1,5 @@
 #pragma once
-#include <Windows.h>
 #include <bitset>
-#include <string>
-#include "SimpleUtilities/Vector2.h"
 
 namespace SimpleUtilities
 {

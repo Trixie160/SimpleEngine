@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <array>
 #include <mutex>
 #include <unordered_set>
 #include <unordered_map>
